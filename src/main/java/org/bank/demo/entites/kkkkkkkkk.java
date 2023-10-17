@@ -1,2 +1,4 @@
-package org.bank.demo.entites;public class kkkkkkkkk {
+package org.bank.demo.entites;
+
+public class kkkkkkkkk {
 }
