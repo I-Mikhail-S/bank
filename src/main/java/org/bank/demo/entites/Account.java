@@ -57,7 +57,7 @@ public class Account {
     public void setCard(Card card) {
         this.card = card;
     }
-66
+
     public Long getId() {
         return id;
     }
