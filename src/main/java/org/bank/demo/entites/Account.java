@@ -1,38 +1,51 @@
 package org.bank.demo.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "account")
+@Table(name = "accounts")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Long telephone;
     private String email;
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore ()
+    private Card card;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirds;
     private LocalDate dateCreateAccount;
 
     public Account() {
     }
 
-    public Account(Long id, String name, Long telephone, String email, LocalDate dateOfBirds, LocalDate dateCreateAccount) {
+    public Account(Long id, String name, Long telephone, String email, LocalDate dateOfBirds) {
         this.id = id;
         this.name = name;
         this.telephone = telephone;
         this.email = email;
         this.dateOfBirds = dateOfBirds;
-        this.dateCreateAccount = dateCreateAccount;
     }
 
-    public Account(String name, Long telephone, String email, LocalDate dateOfBirds, LocalDate dateCreateAccount) {
+    public Account(String name, Long telephone, String email, Card card, LocalDate dateOfBirds) {
         this.name = name;
         this.telephone = telephone;
         this.email = email;
+        this.card = card;
         this.dateOfBirds = dateOfBirds;
-        this.dateCreateAccount = dateCreateAccount;
+    }
+
+    @PrePersist
+    public void init(){
+        // cразу заполняем дату создания
+        this.dateCreateAccount = LocalDate.now();
     }
 
     public Long getId() {
@@ -65,6 +78,14 @@ public class Account {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 
     public LocalDate getDateOfBirds() {

@@ -4,13 +4,14 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "card")
+@Table(name = "cards")
 public class Card {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "accounts_id")
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "account_id", nullable = false)
     private Account account;
     private Double balance;
     private LocalDate dateCreateCard;
@@ -19,19 +20,28 @@ public class Card {
     public Card() {
     }
 
-    public Card(Account account, Double balance, LocalDate dateCreateCard, LocalDate dateCloseCard) {
+    public Card (Account account){
+        this.account = account;
+    }
+
+    public Card(Account account, Double balance,  LocalDate dateCloseCard) {
         this.account = account;
         this.balance = balance;
-        this.dateCreateCard = dateCreateCard;
         this.dateCloseCard = dateCloseCard;
     }
 
-    public Card(Long id, Account account, Double balance, LocalDate dateCreateCard, LocalDate dateCloseCard) {
+    public Card(Long id, Account account, Double balance, LocalDate dateCloseCard) {
         this.id = id;
         this.account = account;
         this.balance = balance;
-        this.dateCreateCard = dateCreateCard;
         this.dateCloseCard = dateCloseCard;
+    }
+
+    @PrePersist
+    public void init(){
+        this.dateCreateCard = LocalDate.now();
+        this.balance = 0.0;
+        this.dateCloseCard = dateCreateCard.plusYears(4);
     }
 
     public Long getId() {
