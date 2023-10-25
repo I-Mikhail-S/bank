@@ -1,7 +1,9 @@
 package org.bank.demo.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -17,29 +19,15 @@ public class Account {
     private Long telephone;
     private String email;
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore ()
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     private Card card;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirds;
     private LocalDate dateCreateAccount;
 
     public Account() {
-    }
-
-    public Account(Long id, String name, Long telephone, String email, LocalDate dateOfBirds) {
-        this.id = id;
-        this.name = name;
-        this.telephone = telephone;
-        this.email = email;
-        this.dateOfBirds = dateOfBirds;
-    }
-
-    public Account(String name, Long telephone, String email, Card card, LocalDate dateOfBirds) {
-        this.name = name;
-        this.telephone = telephone;
-        this.email = email;
-        this.card = card;
-        this.dateOfBirds = dateOfBirds;
     }
 
     @PrePersist

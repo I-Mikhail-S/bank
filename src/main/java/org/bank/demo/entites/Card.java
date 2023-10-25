@@ -1,5 +1,7 @@
 package org.bank.demo.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -12,6 +14,7 @@ public class Card {
     private Long id;
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "account_id", nullable = false)
+    @JsonIgnore
     private Account account;
     private Double balance;
     private LocalDate dateCreateCard;
@@ -24,23 +27,10 @@ public class Card {
         this.account = account;
     }
 
-    public Card(Account account, Double balance,  LocalDate dateCloseCard) {
-        this.account = account;
-        this.balance = balance;
-        this.dateCloseCard = dateCloseCard;
-    }
-
-    public Card(Long id, Account account, Double balance, LocalDate dateCloseCard) {
-        this.id = id;
-        this.account = account;
-        this.balance = balance;
-        this.dateCloseCard = dateCloseCard;
-    }
-
     @PrePersist
     public void init(){
         this.dateCreateCard = LocalDate.now();
-        this.balance = 0.0;
+        this.balance = 1000.0;
         this.dateCloseCard = dateCreateCard.plusYears(4);
     }
 
