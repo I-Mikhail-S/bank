@@ -21,8 +21,7 @@ public class AccountService {
 
     public Account createAccount(Account account){
 
-        Card card = new Card();
-        card.setAccount(account);
+        Card card = new Card(account);
         account.setCard(card);
 
         return accountRepository.save(account);

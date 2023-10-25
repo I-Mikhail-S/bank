@@ -19,13 +19,16 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping(value = "create")
-    public ResponseEntity<Account> createAccount(@RequestBody Account account){
+    public ResponseEntity<?> createAccount(@RequestBody Account account){
       Account account1 = accountService.createAccount(account);
       return new ResponseEntity<>(account1, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "{id}")
-    public Optional<Account> getInfoAccount (@PathVariable("id") Long id){
-        return accountService.getInfoAccount(id);
+    public ResponseEntity<?> getInfoAccount (@PathVariable("id") Long id){
+        Optional<Account> account = accountService.getInfoAccount(id);
+        if (account.isPresent())
+            return new ResponseEntity<>(account.get(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
