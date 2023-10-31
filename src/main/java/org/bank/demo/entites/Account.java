@@ -19,9 +19,7 @@ public class Account {
     private Long telephone;
     private String email;
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIdentityInfo(
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+    @JsonIgnore
     private Card card;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirds;

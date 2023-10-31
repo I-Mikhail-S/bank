@@ -1,6 +1,4 @@
 package org.bank.demo.servises;
-
-
 import org.bank.demo.entites.Account;
 import org.bank.demo.entites.Card;
 import org.bank.demo.repositories.AccountRepository;
@@ -16,13 +14,11 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    @Autowired
-    private CardRepository  cardRepository;
 
     public Account createAccount(Account account){
 
-        Card card = new Card(account);
-        account.setCard(card);
+        //Card card = new Card(account);
+        //account.setCard(card);
 
         return accountRepository.save(account);
     }
@@ -30,4 +26,9 @@ public class AccountService {
     public Optional<Account> getInfoAccount (Long id) {
         return accountRepository.findById(id);
     }
+
+    public void deleteAccount(Long id){
+        accountRepository.deleteById(id);
+    }
+
 }
