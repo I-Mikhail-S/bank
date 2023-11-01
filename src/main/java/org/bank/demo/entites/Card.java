@@ -13,8 +13,7 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "account_id", nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
     private Double balance;
     private LocalDate dateCreateCard;

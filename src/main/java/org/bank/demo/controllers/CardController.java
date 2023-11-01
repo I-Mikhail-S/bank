@@ -21,9 +21,8 @@ public class CardController {
     private CardService cardService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createCard(Card card) {
-        Optional<Card> card1 = cardService.createCard(card);
+    public ResponseEntity<?> createCard(Long accountId) {
+        Card card1 = cardService.createCard(accountId);
         return new ResponseEntity<>(card1, HttpStatus.CREATED);
     }
-
 }

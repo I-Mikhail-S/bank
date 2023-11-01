@@ -7,6 +7,7 @@ import org.bank.demo.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ public class TransactionService {
     @Autowired
     private CardRepository cardRepository;
 
+    @Transactional
     public Transaction createTransaction(Transaction transaction) {
         Optional<Card> cardSender = cardRepository.findById(transaction.getSenderId());
         Optional<Card> cardRecipient = cardRepository.findById(transaction.getRecipientId());

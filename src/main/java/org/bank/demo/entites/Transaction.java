@@ -11,7 +11,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.ORDINAL)
-    private Cash cash;
+    private Currency currency;
     private double money;
     @Column(name = "sendler_id")
     private Long senderId;
@@ -22,8 +22,8 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Cash cash, double money, Long senderId, Long recipientId) {
-        this.cash = cash;
+    public Transaction(Currency currency, double money, Long senderId, Long recipientId) {
+        this.currency = currency;
         this.money = money;
         this.senderId = senderId;
         this.recipientId = recipientId;
@@ -43,12 +43,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Cash getCash() {
-        return cash;
+    public Currency getCash() {
+        return currency;
     }
 
-    public void setCash(Cash cash) {
-        this.cash = cash;
+    public void setCash(Currency currency) {
+        this.currency = currency;
     }
 
     public double getMoney() {
@@ -87,7 +87,7 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", cash=" + cash +
+                ", cash=" + currency +
                 ", money=" + money +
                 ", senderId=" + senderId +
                 ", recipientId=" + recipientId +

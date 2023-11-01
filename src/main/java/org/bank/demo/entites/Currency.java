@@ -1,6 +1,6 @@
 package org.bank.demo.entites;
 
-public enum Cash {
+public enum Currency {
     SCOIN,
     RUB,
     USD,

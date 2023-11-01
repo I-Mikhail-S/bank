@@ -1,9 +1,7 @@
 package org.bank.demo.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,7 +20,7 @@ public class Account {
     @JsonIgnore
     private Card card;
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate dateOfBirds;
+    private LocalDate dateOfBirth;
     private LocalDate dateCreateAccount;
 
     public Account() {
@@ -74,12 +72,12 @@ public class Account {
         this.card = card;
     }
 
-    public LocalDate getDateOfBirds() {
-        return dateOfBirds;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDateOfBirds(LocalDate dateOfBirds) {
-        this.dateOfBirds = dateOfBirds;
+    public void setDateOfBirth(LocalDate dateOfBirds) {
+        this.dateOfBirth = dateOfBirds;
     }
 
     public LocalDate getDateCreateAccount() {
@@ -96,7 +94,7 @@ public class Account {
                 "name='" + name + '\'' +
                 ", telephone=" + telephone +
                 ", email='" + email + '\'' +
-                ", dateOfBirds=" + dateOfBirds +
+                ", dateOfBirds=" + dateOfBirth +
                 ", dateCreateAccount=" + dateCreateAccount +
                 '}';
     }
