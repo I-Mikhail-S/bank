@@ -9,7 +9,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     @Enumerated(EnumType.ORDINAL)
     private Currency currency;
     private double money;
@@ -43,11 +43,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public Currency getCash() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCash(Currency currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 

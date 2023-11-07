@@ -1,7 +1,10 @@
 package org.bank.demo.servises;
 
+import org.bank.demo.api.request.CreateTransactionRequest;
+import org.bank.demo.api.response.CreateTransactionResponse;
 import org.bank.demo.entites.Card;
 import org.bank.demo.entites.Transaction;
+import org.bank.demo.mapper.TransactionMapper;
 import org.bank.demo.repositories.CardRepository;
 import org.bank.demo.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +21,26 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private CardRepository cardRepository;
+    @Autowired
+    private TransactionMapper transactionMapper;
 
     @Transactional
-    public Transaction createTransaction(Transaction transaction) {
-        Optional<Card> cardSender = cardRepository.findById(transaction.getSenderId());
-        Optional<Card> cardRecipient = cardRepository.findById(transaction.getRecipientId());
+    public CreateTransactionResponse createTransaction(CreateTransactionRequest request) {
+        Optional<Card> cardSender = cardRepository.findById(request.getSenderId());
+        Optional<Card> cardRecipient = cardRepository.findById(request.getRecipientId());
+        Transaction transaction = transactionMapper.toEntity(request);
 
         if (cardSender.isPresent() && cardRecipient.isPresent() ) {
-            cardSender.get().setBalance(cardSender.get().getBalance() - transaction.getMoney());
-            cardRecipient.get().setBalance(cardRecipient.get().getBalance() + transaction.getMoney());
+            cardSender.get().setBalance(cardSender.get().getBalance() - request.getMoney());
+            cardRecipient.get().setBalance(cardRecipient.get().getBalance() + request.getMoney());
         } else
             throw new RuntimeException("Пустая карта!");
-
+        System.out.println(transaction.getCurrency());
+        System.out.println(""+request.getMoney() + request.getCurrency());
         cardRepository.save(cardSender.get());
         cardRepository.save(cardRecipient.get());
-
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
+        return transactionMapper.toResponse(transaction);
     }
 
     public Optional<Transaction> getInfoTransaction(Long id) {

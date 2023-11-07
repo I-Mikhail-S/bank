@@ -1,5 +1,7 @@
 package org.bank.demo.controllers;
 
+import org.bank.demo.api.request.CreateTransactionRequest;
+import org.bank.demo.api.response.CreateTransactionResponse;
 import org.bank.demo.entites.Transaction;
 import org.bank.demo.servises.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping(value = "create")
-    public ResponseEntity<?> createTransaction(@RequestBody Transaction transaction) {
-        Transaction transaction1 = transactionService.createTransaction(transaction);
-        return new ResponseEntity<>(transaction1, HttpStatus.CREATED);
+    public CreateTransactionResponse createTransaction(@RequestBody CreateTransactionRequest request) {
+        return transactionService.createTransaction(request);
     }
 
     @GetMapping(value = "{id}")
