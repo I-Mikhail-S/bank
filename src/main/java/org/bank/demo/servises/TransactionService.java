@@ -35,8 +35,6 @@ public class TransactionService {
             cardRecipient.get().setBalance(cardRecipient.get().getBalance() + request.getMoney());
         } else
             throw new RuntimeException("Пустая карта!");
-        System.out.println(transaction.getCurrency());
-        System.out.println(""+request.getMoney() + request.getCurrency());
         cardRepository.save(cardSender.get());
         cardRepository.save(cardRecipient.get());
         transactionRepository.save(transaction);

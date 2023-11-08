@@ -1,6 +1,9 @@
 package org.bank.demo.servises;
+import org.bank.demo.api.request.CreateAccountRequest;
+import org.bank.demo.api.response.CreateAccountResponse;
 import org.bank.demo.entites.Account;
 import org.bank.demo.entites.Card;
+import org.bank.demo.mapper.AccountMapper;
 import org.bank.demo.repositories.AccountRepository;
 import org.bank.demo.repositories.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +16,17 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AccountMapper accountMapper;
 
 
-    public Account createAccount(Account account){
-
+    public CreateAccountResponse createAccount(CreateAccountRequest request){
+        Account account = accountMapper.toEntity(request);
+        accountRepository.save(account);
         //Card card = new Card(account);
         //account.setCard(card);
 
-        return accountRepository.save(account);
+        return accountMapper.toResponse(account);
     }
 
     public Optional<Account> getInfoAccount (Long id) {

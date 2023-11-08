@@ -1,6 +1,8 @@
 package org.bank.demo.controllers;
 
 
+import org.bank.demo.api.request.CreateAccountRequest;
+import org.bank.demo.api.response.CreateAccountResponse;
 import org.bank.demo.entites.Account;
 import org.bank.demo.servises.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,10 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
     @PostMapping(value = "create")
-    public ResponseEntity<?> createAccount(@RequestBody Account account){
-      Account account1 = accountService.createAccount(account);
-      return new ResponseEntity<>(account1, HttpStatus.CREATED);
+    public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request){
+      return accountService.createAccount((request));
     }
-
     @GetMapping(value = "{id}")
     public ResponseEntity<?> getInfoAccount (@PathVariable("id") Long id){
         Optional<Account> account = accountService.getInfoAccount(id);
@@ -30,7 +29,6 @@ public class AccountController {
             return new ResponseEntity<>(account.get(), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
     @DeleteMapping("/delete/{id}")
     public void deleteAccount(@PathVariable Long id){
         accountService.deleteAccount(id);
