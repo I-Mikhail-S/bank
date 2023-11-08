@@ -1,11 +1,10 @@
 package org.bank.demo.servises;
+
 import org.bank.demo.api.request.CreateAccountRequest;
 import org.bank.demo.api.response.CreateAccountResponse;
 import org.bank.demo.entites.Account;
-import org.bank.demo.entites.Card;
 import org.bank.demo.mapper.AccountMapper;
 import org.bank.demo.repositories.AccountRepository;
-import org.bank.demo.repositories.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +13,13 @@ import java.util.Optional;
 @Service
 public class AccountService {
 
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
     @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private AccountMapper accountMapper;
+    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper) {
+        this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
+    }
 
 
     public CreateAccountResponse createAccount(CreateAccountRequest request){

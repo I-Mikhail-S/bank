@@ -16,25 +16,18 @@ import java.util.Optional;
 @Service
 public class CardService {
 
+    private final CardRepository cardRepository;
+    private final AccountRepository accountRepository;
+    private final CardMapper cardMapper;
     @Autowired
-    private CardRepository cardRepository;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private CardMapper cardMapper;
+    public CardService(CardRepository cardRepository, AccountRepository accountRepository, CardMapper cardMapper) {
+        this.cardRepository = cardRepository;
+        this.accountRepository = accountRepository;
+        this.cardMapper = cardMapper;
+    }
 
 
 
-    /*@Transactional
-    public Optional<Card> createCard(Card card) {
-        Account account = accountRepository.getReferenceById(card.getAccount().getId());
-        if (account != null) {
-            card.setAccount(account);
-            accountRepository.save(account);
-            return Optional.of(cardRepository.save(card));
-        }
-        return Optional.empty();
-    }*/
 
     @Transactional
     public CreateCardResponse createCard(Long accountId) {

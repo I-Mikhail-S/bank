@@ -8,7 +8,6 @@ import org.bank.demo.mapper.TransactionMapper;
 import org.bank.demo.repositories.CardRepository;
 import org.bank.demo.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +16,15 @@ import java.util.Optional;
 @Service
 public class TransactionService {
 
+    private final TransactionRepository transactionRepository;
+    private final CardRepository cardRepository;
+    private final TransactionMapper transactionMapper;
     @Autowired
-    private TransactionRepository transactionRepository;
-    @Autowired
-    private CardRepository cardRepository;
-    @Autowired
-    private TransactionMapper transactionMapper;
+    public TransactionService(TransactionRepository transactionRepository, CardRepository cardRepository, TransactionMapper transactionMapper) {
+        this.transactionRepository = transactionRepository;
+        this.cardRepository = cardRepository;
+        this.transactionMapper = transactionMapper;
+    }
 
     @Transactional
     public CreateTransactionResponse createTransaction(CreateTransactionRequest request) {
