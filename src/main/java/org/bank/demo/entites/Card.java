@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -25,6 +24,8 @@ public class Card {
     private LocalDate dateCreateCard;
     private LocalDate dateCloseCard;
 
+    public Card() {
+    }
 
     public Card (Account account){
         this.account = account;
@@ -34,5 +35,21 @@ public class Card {
         this.dateCreateCard = LocalDate.now();
         this.balance = 1000.0;
         this.dateCloseCard = dateCreateCard.plusYears(4);
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

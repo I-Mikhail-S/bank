@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/card/")
+@RequestMapping("api/admin/card")
 public class CardController {
-
+    private final CardService cardService;
     @Autowired
-    private CardService cardService;
+    public CardController(CardService cardService) {
+        this.cardService = cardService;
+    }
+
     @PostMapping("/create")
     public CreateCardResponse createCard(Long accountId) {
         return cardService.createCard(accountId);

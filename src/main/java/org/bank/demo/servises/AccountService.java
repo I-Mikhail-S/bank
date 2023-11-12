@@ -22,14 +22,14 @@ public class AccountService {
     }
 
 
-    public CreateAccountResponse createAccount(CreateAccountRequest request){
-        Account account = accountMapper.toEntity(request);
-        accountRepository.save(account);
-        //Card card = new Card(account);
-        //account.setCard(card);
-
-        return accountMapper.toResponse(account);
-    }
+//    public CreateAccountResponse createAccount(CreateAccountRequest request){
+//        Account account = accountMapper.toEntity(request);
+//        accountRepository.save(account);
+//        //Card card = new Card(account);
+//        //account.setCard(card);
+//
+//        return accountMapper.toResponse(account);
+//    }
 
     public Optional<Account> getInfoAccount (Long id) {
         return accountRepository.findById(id);

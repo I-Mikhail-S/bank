@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Console;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,7 @@ public class TransactionService {
     public CreateTransactionResponse createTransaction(CreateTransactionRequest request) {
         Optional<Card> cardSender = cardRepository.findById(request.getSenderId());
         Optional<Card> cardRecipient = cardRepository.findById(request.getRecipientId());
+        System.out.println(request.toString());
         Transaction transaction = transactionMapper.toEntity(request);
 
         if (cardSender.isPresent() && cardRecipient.isPresent() ) {
