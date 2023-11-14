@@ -1,5 +1,6 @@
 package org.bank.demo.entites;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,9 @@ public class Transaction {
     private Long senderId;
     @Column(name = "recipient_id")
     private Long recipientId;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime date;
+
     @PrePersist
     public void init() {
         // cразу заполняем дату проведения операции

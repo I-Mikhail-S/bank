@@ -19,15 +19,13 @@ public class CardService {
     private final CardRepository cardRepository;
     private final AccountRepository accountRepository;
     private final CardMapper cardMapper;
+
     @Autowired
     public CardService(CardRepository cardRepository, AccountRepository accountRepository, CardMapper cardMapper) {
         this.cardRepository = cardRepository;
         this.accountRepository = accountRepository;
         this.cardMapper = cardMapper;
     }
-
-
-
 
     @Transactional
     public CreateCardResponse createCard(Long accountId) {

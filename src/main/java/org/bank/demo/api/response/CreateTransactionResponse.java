@@ -14,6 +14,4 @@ public class CreateTransactionResponse {
     private Double money;
     private Long senderId;
     private Long recipientId;
-
-
 }

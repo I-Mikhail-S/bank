@@ -16,8 +16,13 @@ import java.util.Optional;
 @RequestMapping("api/account/")
 public class AccountController {
 
+    private final AccountService accountService;
+
     @Autowired
-    private AccountService accountService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
     @PostMapping(value = "create")
     public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request){
       return accountService.createAccount((request));

@@ -19,6 +19,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CardRepository cardRepository;
     private final TransactionMapper transactionMapper;
+
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, CardRepository cardRepository, TransactionMapper transactionMapper) {
         this.transactionRepository = transactionRepository;

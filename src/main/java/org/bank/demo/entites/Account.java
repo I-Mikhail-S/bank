@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "accounts")
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +28,9 @@ public class Account {
     private Card card;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateCreateAccount;
+
     @PrePersist
     public void init(){
         // cразу заполняем дату создания
