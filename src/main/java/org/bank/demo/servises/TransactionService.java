@@ -31,7 +31,6 @@ public class TransactionService {
     public CreateTransactionResponse createTransaction(CreateTransactionRequest request) {
         Optional<Card> cardSender = cardRepository.findById(request.getSenderId());
         Optional<Card> cardRecipient = cardRepository.findById(request.getRecipientId());
-        System.out.println(request.toString());
         Transaction transaction = transactionMapper.toEntity(request);
 
         if (cardSender.isPresent() && cardRecipient.isPresent() ) {

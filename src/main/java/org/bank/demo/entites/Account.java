@@ -2,16 +2,13 @@ package org.bank.demo.entites;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,8 +33,9 @@ public class Account implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
     private Set<Role> authorities;
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Card card;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Card> cards;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
@@ -81,12 +79,12 @@ public class Account implements UserDetails {
         this.authorities = authorities;
     }
 
-    public Card getCard() {
-        return card;
+    public Set<Card> getCards() {
+        return cards;
     }
 
-    public void setCard(Card card) {
-        this.card = card;
+    public void setCards(Set<Card> card) {
+        this.cards = card;
     }
 
     public LocalDate getDateOfBirth() {
@@ -116,7 +114,7 @@ public class Account implements UserDetails {
                 ", name='" + name + '\'' +
                 ", telephone=" + telephone +
                 ", authorities=" + authorities +
-                ", card=" + card +
+                ", card=" + cards +
                 ", dateOfBirth=" + dateOfBirth +
                 ", dateCreateAccount=" + dateCreateAccount +
                 '}';
@@ -130,14 +128,14 @@ public class Account implements UserDetails {
         this.authorities = authorities;
     }
 
-    public Account(Long id, String email, String password, String name, Long telephone, Set<Role> authorities, Card card, LocalDate dateOfBirth, LocalDate dateCreateAccount) {
+    public Account(Long id, String email, String password, String name, Long telephone, Set<Role> authorities, Set<Card> cards, LocalDate dateOfBirth, LocalDate dateCreateAccount) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.telephone = telephone;
         this.authorities = authorities;
-        this.card = card;
+        this.cards = cards;
         this.dateOfBirth = dateOfBirth;
         this.dateCreateAccount = dateCreateAccount;
     }
@@ -150,6 +148,7 @@ public class Account implements UserDetails {
     public Account() {
         super();
         authorities = new HashSet<>();
+
     }
 
     public Set<Role> getAuthorities() {

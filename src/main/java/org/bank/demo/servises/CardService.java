@@ -3,6 +3,7 @@ package org.bank.demo.servises;
 import org.bank.demo.api.response.CreateCardResponse;
 import org.bank.demo.entites.Account;
 import org.bank.demo.entites.Card;
+import org.bank.demo.entites.Currency;
 import org.bank.demo.mapper.CardMapper;
 import org.bank.demo.repositories.AccountRepository;
 import org.bank.demo.repositories.CardRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -30,12 +32,14 @@ public class CardService {
 
 
     @Transactional
-    public CreateCardResponse createCard(Long accountId) {
-        System.out.println(accountId);
+    public CreateCardResponse createCard(Long accountId, Currency currency) {
         Optional<Account> accountOptional = accountRepository.findById(accountId);
         if (accountOptional.isPresent()) {
             Account account = accountOptional.get();// Извлекаем значение из Optional
-            Card card = new Card(account);
+            Set<Card> cards= account.getCards();
+            Card card = new Card(account, currency);
+            cards.add(card);
+            account.setCards(cards);
             accountRepository.save(account); // Сохраняем аккаунт
             cardRepository.save(card);// Сохраняем карту
             return cardMapper.toResponse(card);
