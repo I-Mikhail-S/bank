@@ -53,6 +53,7 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
+                    auth.antMatchers("/api/currency/**").permitAll();
                     auth.antMatchers("/api/auth/**").permitAll();
                     auth.antMatchers("/api/admin/**").hasRole("ADMIN");
                     auth.antMatchers("/api/user/**").hasAnyRole("ADMIN", "USER");
