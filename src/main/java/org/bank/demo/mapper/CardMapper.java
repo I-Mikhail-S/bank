@@ -3,10 +3,10 @@ package org.bank.demo.mapper;
 import org.bank.demo.api.response.CreateCardResponse;
 import org.bank.demo.entites.Card;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
 @Mapper(componentModel = "spring")
+@Component
 public interface CardMapper {
     CreateCardResponse toResponse(Card model);
 }

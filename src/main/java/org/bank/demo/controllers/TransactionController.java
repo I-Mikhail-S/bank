@@ -7,6 +7,7 @@ import org.bank.demo.servises.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -15,7 +16,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/transaction/")
 public class TransactionController {
-
     private final TransactionService transactionService;
 
     @Autowired
@@ -23,6 +23,7 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(value = "create")
     public CreateTransactionResponse createTransaction(@RequestBody CreateTransactionRequest request) {
         return transactionService.createTransaction(request);

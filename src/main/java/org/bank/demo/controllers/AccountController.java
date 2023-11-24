@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/account/")
+@RequestMapping("api/admin/account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -25,8 +25,13 @@ public class AccountController {
 
     @PostMapping(value = "create")
     public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request){
-      return accountService.createAccount((request));
+      return accountService.createAccount(request);
     }
+
+//    @PostMapping(value = "create")
+//    public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request){
+//      return accountService.createAccount((request));
+//    }
     @GetMapping(value = "{id}")
     public ResponseEntity<?> getInfoAccount (@PathVariable("id") Long id){
         Optional<Account> account = accountService.getInfoAccount(id);

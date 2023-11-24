@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("api/card/")
+@RequestMapping("api/admin/card")
 public class CardController {
-
     private final CardService cardService;
 
     @Autowired
