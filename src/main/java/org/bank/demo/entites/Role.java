@@ -1,5 +1,7 @@
 package org.bank.demo.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +16,11 @@ public class Role implements GrantedAuthority{
         @Id
         @GeneratedValue(strategy= GenerationType.AUTO)
         @Column(name="role_id")
+        @JsonIgnore
         private Integer roleId;
-
+        @NotNull
         private String authority;
+
         public Role(){
                 super();
         }

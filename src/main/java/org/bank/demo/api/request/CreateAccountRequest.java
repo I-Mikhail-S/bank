@@ -1,15 +1,10 @@
 package org.bank.demo.api.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.bank.demo.entites.Role;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class CreateAccountRequest {
     private String name;

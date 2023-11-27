@@ -1,5 +1,6 @@
 package org.bank.demo.servises;
 
+import org.bank.demo.exception.NotFoundAccountException;
 import org.bank.demo.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +24,9 @@ public class UserService implements UserDetailsService {
 
         System.out.println("In the user details service");
 
-        return accountRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user is not valid"));
+        return accountRepository.findByEmail(email).orElseThrow(
+                () -> new NotFoundAccountException("user is not valid")
+        );
     }
 
 }

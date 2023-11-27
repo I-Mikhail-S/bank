@@ -6,19 +6,18 @@ import org.bank.demo.entites.Role;
 import java.time.LocalDate;
 import java.util.Set;
 
-
 public class CreateAccountResponse {
-    private Long id;
     private String name;
+    @JsonIgnore
     private Long telephone;
     private String email;
     private Set<Role> authorities;
+    @JsonIgnore
     private LocalDate dateOfBirth;
     @JsonIgnore
     private String password;
 
-    public CreateAccountResponse(Long id, String name, Long telephone, String email, Set<Role> authorities, LocalDate dateOfBirth, String password) {
-        this.id = id;
+    public CreateAccountResponse(String name, Long telephone, String email, Set<Role> authorities, LocalDate dateOfBirth, String password) {
         this.name = name;
         this.telephone = telephone;
         this.email = email;
@@ -28,14 +27,6 @@ public class CreateAccountResponse {
     }
 
     public CreateAccountResponse() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

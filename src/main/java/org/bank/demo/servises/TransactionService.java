@@ -4,6 +4,9 @@ import org.bank.demo.api.request.CreateTransactionRequest;
 import org.bank.demo.api.response.CreateTransactionResponse;
 import org.bank.demo.entites.Card;
 import org.bank.demo.entites.Transaction;
+import org.bank.demo.exception.NotFoundAccountException;
+import org.bank.demo.exception.NotFoundCardException;
+import org.bank.demo.exception.NotFoundTransactionalException;
 import org.bank.demo.mapper.TransactionMapper;
 import org.bank.demo.repositories.CardRepository;
 import org.bank.demo.repositories.TransactionRepository;
@@ -30,24 +33,28 @@ public class TransactionService {
 
     @Transactional
     public CreateTransactionResponse createTransaction(CreateTransactionRequest request) {
-        Optional<Card> cardSender = cardRepository.findById(request.getSenderId());
-        Optional<Card> cardRecipient = cardRepository.findById(request.getRecipientId());
-        System.out.println(request.toString());
+        Optional<Card> cardSender = Optional.ofNullable(cardRepository.findById(request.getSenderId()).orElseThrow(
+                () -> new NotFoundAccountException("Нет аккаунта с таким ID!")
+        ));
+        Optional<Card> cardRecipient = Optional.ofNullable(cardRepository.findById(request.getRecipientId()).orElseThrow(
+                () -> new NotFoundCardException("Нет карты с таким ID!")
+        ));
         Transaction transaction = transactionMapper.toEntity(request);
 
-        if (cardSender.isPresent() && cardRecipient.isPresent() ) {
+        if (cardSender.isPresent() && cardRecipient.isPresent()) {
             cardSender.get().setBalance(cardSender.get().getBalance() - request.getMoney());
             cardRecipient.get().setBalance(cardRecipient.get().getBalance() + request.getMoney());
-        } else
-            throw new RuntimeException("Пустая карта!");
-        cardRepository.save(cardSender.get());
-        cardRepository.save(cardRecipient.get());
+            cardRepository.save(cardSender.get());
+            cardRepository.save(cardRecipient.get());
+        }
         transactionRepository.save(transaction);
         return transactionMapper.toResponse(transaction);
     }
 
     public Optional<Transaction> getInfoTransaction(Long id) {
-        return transactionRepository.findById(id);
+        return Optional.ofNullable(transactionRepository.findById(id).orElseThrow(
+                () -> new NotFoundTransactionalException("Нет транзакции с таким ID!")
+        ));
     }
 
 }
