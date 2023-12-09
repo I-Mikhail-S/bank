@@ -26,6 +26,9 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class SecurityConfiguration {
@@ -52,6 +55,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
+                .cors()
+                .and()
                 .authorizeHttpRequests(auth -> {
                     auth.antMatchers("/api/currency/**").permitAll();
                     auth.antMatchers("/api/auth/**").permitAll();
@@ -70,6 +75,17 @@ public class SecurityConfiguration {
         );
 
         return http.build();
+    }
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); // Разрешаем использование креденшлов
+        config.addAllowedOrigin("http://localhost:3000"); // Разрешаем все источники (подставьте свой адрес фронтенда)
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
     @Bean
