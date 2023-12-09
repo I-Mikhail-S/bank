@@ -1,7 +1,5 @@
 package org.bank.demo.api.request;
 
-import lombok.Builder;
-import lombok.Data;
 import org.bank.demo.entites.Currency;
 
 

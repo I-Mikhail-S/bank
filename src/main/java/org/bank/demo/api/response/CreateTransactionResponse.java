@@ -1,8 +1,6 @@
 package org.bank.demo.api.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-import lombok.Data;
 import org.bank.demo.entites.Currency;
 
 

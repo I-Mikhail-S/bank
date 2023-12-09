@@ -1,9 +1,7 @@
 package org.bank.demo.entites;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,13 +14,19 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Enumerated(EnumType.ORDINAL)
+    @NotNull
     private Currency currency;
+    @NotNull
     private double money;
     @Column(name = "sender_id")
+    @NotNull
     private Long senderId;
     @Column(name = "recipient_id")
+    @NotNull
     private Long recipientId;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime date;
+
     @PrePersist
     public void init() {
         // cразу заполняем дату проведения операции

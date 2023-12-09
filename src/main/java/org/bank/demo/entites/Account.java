@@ -3,6 +3,7 @@ package org.bank.demo.entites;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +22,10 @@ public class Account implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @NotNull
     private String email;
     @JsonIgnore
+    @NotNull
     private String password;
     private String name;
     private Long telephone;
@@ -32,12 +35,75 @@ public class Account implements UserDetails {
             joinColumns = {@JoinColumn(name="user_id")},
             inverseJoinColumns = {@JoinColumn(name="role_id")}
     )
+    @NotNull
     private Set<Role> authorities;
     @JsonManagedReference
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Card> cards;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate dateCreateAccount;
+
+    public Account() {
+        super();
+        authorities = new HashSet<>();
+    }
+
+    public Account(Long id, String name, String email, String encodedPassword, Set<Role> authorities) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = encodedPassword;
+        this.authorities = authorities;
+    }
+
+    public Account(String name, String email, String encodedPassword, Set<Role> authorities) {
+        this.name = name;
+        this.email = email;
+        this.password = encodedPassword;
+        this.authorities = authorities;
+    }
+
+    public Account(String email, String password,
+                   String name, Long telephone, Set<Role> authorities,
+                   LocalDate dateOfBirth) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.telephone = telephone;
+        this.authorities = authorities;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Account(String email, String password,
+                   String name, Long telephone, Set<Role> authorities,
+                   Set<Card> cards, LocalDate dateOfBirth) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.telephone = telephone;
+        this.authorities = authorities;
+        this.cards = cards;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    @PrePersist
+    public void init(){
+        // cразу заполняем дату создания
+        this.dateCreateAccount = LocalDate.now();
+    }
+
+    public Set<Role> getAuthorities() {
+        return this.authorities;
+    }
+
+    //    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        // TODO Auto-generated method stub
+//        return (HashSet<Role>)this.authorities;
+//    }
+
 
     public Long getId() {
         return id;
@@ -45,6 +111,45 @@ public class Account implements UserDetails {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    public Set<Card> getCards() {
+        return cards;
     }
 
     public String getEmail() {
@@ -79,14 +184,6 @@ public class Account implements UserDetails {
         this.authorities = authorities;
     }
 
-    public Set<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(Set<Card> card) {
-        this.cards = card;
-    }
-
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
@@ -95,102 +192,7 @@ public class Account implements UserDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public LocalDate getDateCreateAccount() {
-        return dateCreateAccount;
-    }
-
-    public void setDateCreateAccount(LocalDate dateCreateAccount) {
-        this.dateCreateAccount = dateCreateAccount;
-    }
-
-    private LocalDate dateCreateAccount;
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", telephone=" + telephone +
-                ", authorities=" + authorities +
-                ", card=" + cards +
-                ", dateOfBirth=" + dateOfBirth +
-                ", dateCreateAccount=" + dateCreateAccount +
-                '}';
-    }
-
-    public Account(Long id, String name, String email, String encodedPassword, Set<Role> authorities) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = encodedPassword;
-        this.authorities = authorities;
-    }
-
-    public Account(Long id, String email, String password, String name, Long telephone, Set<Role> authorities, Set<Card> cards, LocalDate dateOfBirth, LocalDate dateCreateAccount) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.telephone = telephone;
-        this.authorities = authorities;
+    public void setCards(Set<Card> cards) {
         this.cards = cards;
-        this.dateOfBirth = dateOfBirth;
-        this.dateCreateAccount = dateCreateAccount;
-    }
-
-    @PrePersist
-    public void init(){
-        // cразу заполняем дату создания
-        this.dateCreateAccount = LocalDate.now();
-    }
-    public Account() {
-        super();
-        authorities = new HashSet<>();
-
-    }
-
-    public Set<Role> getAuthorities() {
-        return this.authorities;
-    }
-
-    //    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        // TODO Auto-generated method stub
-//        return (HashSet<Role>)this.authorities;
-//    }
-    @Override
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        return this.password;
-    }
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        // TODO Auto-generated method stub
-        return true;
     }
 }

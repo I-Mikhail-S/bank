@@ -1,14 +1,16 @@
 package org.bank.demo.entites;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -22,10 +24,16 @@ public class Card {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
+    @NotNull
     private Account account;
+    @Enumerated(EnumType.ORDINAL)
+    @NotNull
     private Currency currency;
+    @NotNull
     private Double balance;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateCreateCard;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateCloseCard;
 
     public Card() {
@@ -36,10 +44,16 @@ public class Card {
         this.currency = currency;
     }
 
+    public Card(Account account, Currency currency, Double balance) {
+        this.account = account;
+        this.currency = currency;
+        this.balance = balance;
+    }
+
     @PrePersist
     public void init(){
         this.dateCreateCard = LocalDate.now();
-        this.balance = 1000.0;
+        //this.balance = 1000.0;
         this.dateCloseCard = dateCreateCard.plusYears(4);
     }
 

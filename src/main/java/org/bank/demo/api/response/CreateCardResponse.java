@@ -1,9 +1,6 @@
 package org.bank.demo.api.response;
 
-import lombok.Builder;
-import lombok.Data;
 import org.bank.demo.entites.Currency;
-
 
 public class CreateCardResponse {
     private Long id;

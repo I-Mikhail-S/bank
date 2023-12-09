@@ -26,21 +26,22 @@ import java.util.Set;
 @Service
 @Transactional
 public class AuthenticationService {
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private AccountMapper accountMapper;
+    private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
+    private final AccountMapper accountMapper;
 
-
-
+    @Autowired
+    public AuthenticationService(AccountRepository accountRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService, AccountMapper accountMapper) {
+        this.accountRepository = accountRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+        this.accountMapper = accountMapper;
+    }
 
     public CreateAccountResponse registerUser(CreateAccountRequest request){
 
@@ -52,7 +53,14 @@ public class AuthenticationService {
         authorities.add(userRole);
         request.setPassword(encodedPassword);
         request.setAuthorities(authorities);
+
         Account account = accountMapper.toEntity(request);
+        account.setId(7L);
+/*        account.setName(request.getName());
+        account.setTelephone(request.getTelephone());
+        account.setEmail(request.getEmail());
+        account.setDateOfBirth(request.getDateOfBirth());*/
+
         accountRepository.save(account);
         return accountMapper.toResponse(account);
     }

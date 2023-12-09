@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/auth")
 @CrossOrigin("*")
 public class AuthenticationController {
+    private final AuthenticationService authenticationService;
+
     @Autowired
-    private AuthenticationService authenticationService;
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
 
     @PostMapping("/register")
     public CreateAccountResponse registerUser(@RequestBody CreateAccountRequest request){

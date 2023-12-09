@@ -17,10 +17,12 @@ import java.util.Optional;
 @RequestMapping("api/transaction/")
 public class TransactionController {
     private final TransactionService transactionService;
+
     @Autowired
     public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
+
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(value = "create")
     public CreateTransactionResponse createTransaction(@RequestBody CreateTransactionRequest request) {
